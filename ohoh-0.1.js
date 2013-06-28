@@ -93,32 +93,6 @@
         }
 
         /**
-         * Finds the index of the first occurence of the object if it exists in
-         * the array.
-         *
-         * @param needle Object to look for.
-         * @param haystack Array to search through.
-         * @return {Number} Index of the object, -1 if not found.
-         */
-        function indexOf(needle, haystack) {
-            // Return the index via the native method if possible
-            if (Array.prototype.indexOf) {
-                return haystack.indexOf(needle);
-            }
-
-            // There is no native method
-            // Use a manual loop to find the index
-            for (var i = 0; i < haystack.length; i++) {
-                if (haystack[i] === needle) {
-                    return i;
-                }
-            }
-
-            // Default to returning -1
-            return -1;
-        }
-
-        /**
          * Finds the index of the last occurrence of the object if it exists in
          * the array.
          *
