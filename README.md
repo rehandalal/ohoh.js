@@ -63,21 +63,21 @@ that is capable of emitting events.
 If you are new to JavaScript you may be wondering how to go about instantiating
 an object. This is a fairly straightforward process.
 
-"""javascript
+```javascript
 var MyInstance = mew BaseClass();
-"""
+```
 
 ### Inheritance ###
 
 #### Extending the base class ####
 
-"""javascript
+```javascript
 var SubClass = BaseClass.extend({
   'initialize': function() {
     console.log('A new instance was constructed.');
   }
 });
-"""
+```
 
 In the above example, `SubClass` inherits from `BaseClass`. `initialize` is the
 constructor for all sub classes of `BaseClass`. It is called every time that a
@@ -95,6 +95,6 @@ Some times however, you may want to call the method you are overriding from the
 method that is overriding it. This is done using the special `_super` variable
 that is made available within the context of the overriding method.
 
-"""javascript
+```javascript
 var Father = BaseClass.extend({});
-"""
+```
