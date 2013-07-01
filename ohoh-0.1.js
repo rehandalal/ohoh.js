@@ -15,7 +15,7 @@
  * EventEmitter (https://github.com/Wolfy87/EventEmitter), and the Node.js
  * Events API (http://nodejs.org/api/events.html).
  */
-(function(exports) {
+;(function(exports) {
     // Place the script in strict mode
     'use strict';
 
@@ -26,7 +26,7 @@
 
     // Test for function decompilation and if available provide the
     // appropriate regex to check whether function mentions "_super".
-    fnTest = /return/.test(function() { return 'ok'; }) ? /\b_super\b/ : /.*/
+    fnTest = /return/.test(function() { return 'ok'; }) ? /\b_super\b/ : /.*/;
 
     /**
      * A class for an event object.
@@ -110,7 +110,7 @@
 
         // Return the instance of the class for chaining.
         return this;
-    }
+    };
 
     /**
      * Alias for addListener
@@ -140,7 +140,7 @@
 
         // Return the instance of the class for chaining.
         return this;
-    }
+    };
 
     /**
      * Remove a listener from the listener array for the specified event.
@@ -163,7 +163,7 @@
 
         // Return the instance of the class for chaining.
         return this;
-    }
+    };
 
     /**
      * Alias  for removeListener
@@ -189,7 +189,7 @@
 
         // Return the instance of the class for chaining.
         return this;
-    }
+    };
 
     /**
      * By default EventEmitters will print a warning if more than 10
@@ -206,7 +206,7 @@
 
         // Return the instance of the class for chaining.
         return this;
-    }
+    };
 
     /**
      * Returns an array of listeners for the specified event.
@@ -216,11 +216,11 @@
      */
     prototype.listeners = function(event) {
         if (typeof event === 'undefined') {
-            throw 'An event type must be provided.'
+            throw 'An event type must be provided.';
         }
         var events = this._getEvents();
         return events[event] || (events[event] = []);
-    }
+    };
 
     /**
      * Execute each of the listeners in order with the supplied arguments.
@@ -244,7 +244,7 @@
         }
 
         return count > 0;
-    }
+    };
 
     /**
      * Alias for emit
@@ -271,23 +271,27 @@
         prototype = new this();
         extending = false;
 
+        // Wraps any function that is being overwritten to provide access to
+        // _super;
+        function wrap (name, fn){
+            return function() {
+                var tmp = this._super;
+                this._super = _super[name];
+
+                var value = fn.apply(this, arguments);
+                this._super = tmp;
+
+                return value;
+            };
+        }
+
         // Copy the properties to the new prototype.
         for (var name in properties) {
             // Check if an existing function is being overwritten
             if (typeof properties[name] === 'function' &&
                 typeof _super[name] === 'function' &&
                 fnTest.test(properties[name])) {
-                prototype[name] = (function(name, fn){
-                    return function() {
-                        var tmp = this._super;
-                        this._super = _super[name];
-
-                        var value = fn.apply(this, arguments);
-                        this._super = tmp;
-
-                        return value;
-                    };
-                })(name, properties[name]);
+                prototype[name] = wrap(name, properties[name]);
             } else {
                 prototype[name] = properties[name];
             }
