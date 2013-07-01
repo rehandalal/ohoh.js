@@ -21,7 +21,8 @@
 
     // Indicates whether a base class is being extended.
     var extending = false,
-        fnTest;
+        fnTest,
+        prototype;
 
     // Test for function decompilation and if available provide the
     // appropriate regex to check whether function mentions "_super".
@@ -79,7 +80,7 @@
      * @return {Object} The events storage object.
      * @private
      */
-    BaseClass.prototype._getEvents = function () {
+    prototype._getEvents = function () {
         return this._events || (this._events = {});
     };
 
@@ -91,7 +92,7 @@
      * @param {function} listener Callback function to bind to the event.
      * @returns {Object} Current instance of the class for chaining.
      */
-    BaseClass.prototype.addListener = function(event, listener) {
+    prototype.addListener = function(event, listener) {
         var listeners = this.listeners(event),
             max = this._maxListeners;
 
@@ -116,7 +117,7 @@
      *
      * @type {function}
      */
-    BaseClass.prototype.on = BaseClass.prototype.addListener;
+    prototype.on = prototype.addListener;
 
     /**
      * Adds a one time listener to the specified event. The listener is
@@ -127,7 +128,7 @@
      * @param {function} listener Callback function to bind to the event.
      * @returns {Object} Current instance of the class for chaining.
      */
-    BaseClass.prototype.once = function(event, listener) {
+    prototype.once = function(event, listener) {
         // Wrap the listener in a new function that will remove itself as
         // a listener.
         function listenOnce() {
@@ -151,7 +152,7 @@
      * @param {function} listener Function to be unbound from the event.
      * @returns {Object} Current instance of the class for chaining.
      */
-    BaseClass.prototype.removeListener = function(event, listener) {
+    prototype.removeListener = function(event, listener) {
         var listeners = this.listeners(event),
             index = lastIndexOf(listener, listeners);
 
@@ -169,7 +170,7 @@
      *
      * @type {function}
      */
-    BaseClass.prototype.off = BaseClass.prototype.removeListener;
+    prototype.off = prototype.removeListener;
 
     /**
      * Removes all listeners for of the specified event. If no event is
@@ -178,7 +179,7 @@
      * @param {string} event Name (type) of the event.
      * @returns {Object} Current instance of the class for chaining.
      */
-    BaseClass.prototype.removeAllListeners = function(event) {
+    prototype.removeAllListeners = function(event) {
         if (typeof event === 'undefined') {
             this._events = {};
         } else {
@@ -200,7 +201,7 @@
      * @param {integer} n Maximum number of listeners.
      * @returns {Object} Current instance of the class for chaining.
      */
-    BaseClass.prototype.setMaxListeners = function(n) {
+    prototype.setMaxListeners = function(n) {
         this._maxListeners = n;
 
         // Return the instance of the class for chaining.
@@ -213,7 +214,7 @@
      * @param {string} event Name (type) of the event.
      * @returns {Array} An array of listeners for the event.
      */
-    BaseClass.prototype.listeners = function(event) {
+    prototype.listeners = function(event) {
         if (typeof event === 'undefined') {
             throw 'An event type must be provided.'
         }
@@ -227,7 +228,7 @@
      * @param {string} event Name (type) of the event.
      * @returns {boolean} Returns true if event had listeners, else false.
      */
-    BaseClass.prototype.emit = function(event) {
+    prototype.emit = function(event) {
         var listeners = this.listeners(event),
             count = listeners.length,
             args = Array.prototype.slice.call(arguments);
@@ -250,7 +251,10 @@
      *
      * @type {function}
      */
-    BaseClass.prototype.trigger = BaseClass.prototype.emit;
+    prototype.trigger = prototype.emit;
+
+    // Update the prototype of BaseClass
+    BaseClass.prototype = prototype;
 
     /**
      * Create's a new subclass of the base class.
