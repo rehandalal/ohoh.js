@@ -47,6 +47,7 @@
      * @constructor
      */
     function BaseClass() {}
+    prototype = BaseClass.prototype;
 
     /**
      * Finds the index of the last occurrence of the object if it exists in
@@ -105,7 +106,7 @@
         // Warn if there are more listeners than the maximum.
         if (max > 0 && listeners.length > max) {
             console.warn("More than " + this._maxListeners +
-                         " listeners assigned to '" + event + "' event.");
+                " listeners assigned to '" + event + "' event.");
         }
 
         // Return the instance of the class for chaining.
@@ -252,9 +253,6 @@
      * @type {function}
      */
     prototype.trigger = prototype.emit;
-
-    // Update the prototype of BaseClass
-    BaseClass.prototype = prototype;
 
     /**
      * Create's a new subclass of the base class.
