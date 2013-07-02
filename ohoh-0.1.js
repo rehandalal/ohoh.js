@@ -232,7 +232,7 @@
     prototype.emit = function(event) {
         var listeners = this.listeners(event),
             count = listeners.length,
-            args = Array.prototype.slice.call(arguments);
+            args = Array.prototype.slice.call(arguments, 1);
 
         // Prepend a new event object to the arguments
         args.unshift(new Event(event, this));
